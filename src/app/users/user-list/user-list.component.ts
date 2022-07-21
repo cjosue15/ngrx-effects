@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
+import { AppState } from '../../store/app.reducers';
+import { loadUsers } from '../../store/actions/users.actions';
+import { UsersState } from '../../store/reducers/users.reducer';
 
 @Component({
   selector: 'app-user-list',
@@ -10,12 +12,13 @@ import { User } from '../../models/user.model';
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements OnInit {
-  users$: Observable<User[]>;
-  constructor(private _userService: UserService) {
-    this.users$ = new Observable();
+  userInfo$: Observable<UsersState>;
+  constructor(private _store: Store<AppState>) {
+    this.userInfo$ = new Observable();
   }
 
   ngOnInit(): void {
-    this.users$ = this._userService.getUsers();
+    this.userInfo$ = this._store.select('users');
+    this._store.dispatch(loadUsers());
   }
 }

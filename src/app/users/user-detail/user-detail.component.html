@@ -1,1 +1,40 @@
-<p>user-detail works!</p>
+<ng-container *ngIf="userDetail$ | async as userDetail">
+  <div
+    class="alert alert-warning d-flex flex-column align-items-center"
+    role="alert"
+    *ngIf="userDetail.loading"
+  >
+    <span>Loading...</span>
+
+    <div class="spinner-border text-primary mt-4" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="userDetail.error" class="alert alert-danger" role="alert">
+    <span>Ops, there's an error!</span>
+
+    <pre class="mb-0 mt-4">{{ userDetail.error | json }}</pre>
+  </div>
+
+  <div class="row" *ngIf="userDetail.loaded && !userDetail.error">
+    <div class="col-4">
+      <img
+        [src]="userDetail.user?.avatar"
+        [alt]="userDetail.user?.firstNname"
+      />
+    </div>
+
+    <div class="col">
+      <div class="list-group">
+        <div class="list-group-item">
+          <b>Name: </b> {{ userDetail.user?.firstNname }}
+        </div>
+
+        <div class="list-group-item">
+          <b>Last name: </b> {{ userDetail.user?.lastName }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

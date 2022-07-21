@@ -8,6 +8,10 @@ interface ResponseUserList {
   data: UserBackend[];
 }
 
+interface ResponseUser {
+  data: UserBackend;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -19,11 +23,17 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return this._http
-      .get<ResponseUserList>(`${this._url}/users`)
+      .get<ResponseUserList>(`${this._url}/users?per_page=20&&delay=3`)
       .pipe(
         map((response: ResponseUserList) =>
           response.data.map((item) => userAdapter(item))
         )
       );
+  }
+
+  getUserById(id: string): Observable<User> {
+    return this._http
+      .get<ResponseUser>(`${this._url}/users/${id}?delay=3`)
+      .pipe(map((response: ResponseUser) => userAdapter(response.data)));
   }
 }

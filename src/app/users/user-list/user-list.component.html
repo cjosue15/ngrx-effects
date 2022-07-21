@@ -1,16 +1,36 @@
-<div class="row row-cols-1 row-cols-md-4 g-4">
-  <div class="col" *ngFor="let user of users$ | async">
-    <div class="card">
-      <img
-        [src]="user.avatar"
-        alt="{{ user.firstNname }} {{ user.lastName }}"
-      />
-      <div class="card-body">
-        <h5 class="card-title">{{ user.firstNname }} {{ user.lastName }}</h5>
-        <p class="card-text">{{ user.email }}</p>
-        <div></div>
-        <a href="#" class="btn btn-primary">Go to id {{ user.id }}</a>
+<ng-container *ngIf="userInfo$ | async as userInfo">
+  <div
+    class="alert alert-warning d-flex flex-column align-items-center"
+    role="alert"
+    *ngIf="userInfo.loading"
+  >
+    <span>Loading...</span>
+
+    <div class="spinner-border text-primary mt-4" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="userInfo.error" class="alert alert-danger" role="alert">
+    <span>Ops, there's an error!</span>
+
+    <pre class="mb-0 mt-4">{{ userInfo.error | json }}</pre>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col" *ngFor="let user of userInfo.users">
+      <div class="card">
+        <img
+          [src]="user.avatar"
+          alt="{{ user.firstNname }} {{ user.lastName }}"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ user.firstNname }} {{ user.lastName }}</h5>
+          <p class="card-text">{{ user.email }}</p>
+          <div></div>
+          <a href="#" class="btn btn-primary">Go to id {{ user.id }}</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
