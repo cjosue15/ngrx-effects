@@ -1,0 +1,16 @@
+<div class="row row-cols-1 row-cols-md-4 g-4">
+  <div class="col" *ngFor="let user of users$ | async">
+    <div class="card">
+      <img
+        [src]="user.avatar"
+        alt="{{ user.firstNname }} {{ user.lastName }}"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ user.firstNname }} {{ user.lastName }}</h5>
+        <p class="card-text">{{ user.email }}</p>
+        <div></div>
+        <a href="#" class="btn btn-primary">Go to id {{ user.id }}</a>
+      </div>
+    </div>
+  </div>
+</div>
